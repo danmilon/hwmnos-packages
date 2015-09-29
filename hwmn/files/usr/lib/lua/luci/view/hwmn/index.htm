@@ -1,0 +1,52 @@
+<%#
+LuCI - Lua Configuration Interface
+Copyright 2008 Steven Barth <steven@midlink.org>
+Copyright 2008 Jo-Philipp Wich <xm@leipzig.freifunk.net>
+Copyright 2015 Dan Milon <i@danmilon.me>
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+	http://www.apache.org/licenses/LICENSE-2.0
+
+$Id$
+
+-%>
+<%+header%>
+<%
+local uci = require "luci.model.uci".cursor()
+local tpl = require "luci.template"
+local fs = require "nixio.fs"
+
+local usertext = fs.readfile("/www/luci-static/index_user.html")
+%>
+
+<h2>
+  <a id="content" name="content"><%:Welcome to HWMN!%></a>
+</h2>
+<p>
+  <%: We are an initiative to establish a free, independent and open wireless
+      network.%>
+  <ul>
+    <li><%:Browser our wiki page at %><a href="http://wiki.her.wn>wiki.her.wn</a>.</li>
+    <li><%:Visit WiND and find your neighbor nodes at %><a href="http://wind.her.wn>wind.her.wn</a>.</li>
+    <li><%:Communicate with other members on the mailing list at %><a href="mailto:connect-heraklion@googlegroups.com">connect-heraklion@googlegroups.com</a>.</li>
+  </ul>
+
+<p>
+  <%:If you just flashed or upgraded this device, please configure it at the%>
+  <a href="<%=luci.dispatcher.build_url("admin", "hwmn", "basics")%>">
+    <%:initial configuration page%>
+  </a>
+  (<%:you will need to provide the root password. By default it is ????).%>
+</p>
+
+<p>
+  <strong><%:Notice%></strong>:
+  <%:Internet access depends on technical and organisational conditions and may
+or may not work for you.%>
+</p>
+
+<%=usertext%>
+<%+footer%>

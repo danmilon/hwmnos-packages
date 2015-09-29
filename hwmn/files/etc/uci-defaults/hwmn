@@ -1,0 +1,19 @@
+#!/bin/sh
+# this script needs to be implemented like it can run many times
+# for example if we install a new version of the package this will run again on
+# the router.
+. /lib/functions.sh
+
+uci set system.@system[0].zonename=Europe/Athens
+uci set system.@system[0].timezone=EET-2EEST,M3.5.0/3,M10.5.0/4
+# empty DNS server list and set our own
+uci delete dhcp.@dnsmasq[0].server
+uci add_list dhcp.@dnsmasq[0].server='10.176.0.10'
+uci add_list dhcp.@dnsmasq[0].server='10.176.0.11'
+
+# set /etc/init.d/hwmn to run on every uci change on hwmn
+# delete the entry if it existed
+uci del ucitrack.@hwmn[0]
+uci add ucitrack hwmn
+uci set ucitrack.@hwmn[0].init=hwmn
+exit 0

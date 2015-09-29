@@ -1,0 +1,6 @@
+package 'hwmn'
+
+config hwmn 'generic'
+       option enabled '1'
+
+config hwmn 'network'
