@@ -13,7 +13,8 @@ define Package/hwmn
   CATEGORY:=HWMN
   SUBMENU:=3. Applications
   TITLE:=HWMN easy configuration
-  DEPENDS:=+luci-ssl +luci-mod-admin-full +babeld +luci-lib-nixio
+  DEPENDS:=+luci-ssl +luci-mod-admin-full +babeld +luci-lib-nixio \
+           +dnsmasq-full +mtr +ip-full +kmod-nf-nathelper-extra
   PKGARCH:=all
   MAINTAINER:=Dan Milon <i@danmilon.me>
 endef

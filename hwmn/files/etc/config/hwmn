@@ -1,6 +1,8 @@
 package 'hwmn'
 
-config hwmn 'generic'
+config generic
        option enabled '1'
+       option node_name ''
 
-config hwmn 'network'
+config network
+       option ipv4_subnet ''
