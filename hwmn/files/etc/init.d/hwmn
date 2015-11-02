@@ -114,12 +114,17 @@ setup_links() {
     reload_config
 }
 
-reload_service() {
+check_enabled() {
     # do not run if we are disabled by hwmn.generic.enabled
     # if option does not exist, assume disabled (4th argument)
     local enabled
-    uci_get hwmn @generic[0] enabled 0
-    [[ $enabled == 0 ]] && exit 0
+    config_get_bool enabled "$section" "enabled" "0"
+    [[ "$enabled" == "0" ]] && exit 0
+}
+
+reload_service() {
+    config_load hwmn
+    config_foreach generic check_enabled
 
     setup_dnsmasq
     setup_lan
