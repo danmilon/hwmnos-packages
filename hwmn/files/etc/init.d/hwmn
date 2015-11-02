@@ -20,6 +20,10 @@ get_ipv4_subnet() {
     uci_get hwmn @network[0] ipv4_subnet ''
 }
 
+get_node_name() {
+    uci_get hwmn @generic[0] node_name
+}
+
 
 setup_lan() {
     local ipv4_subnet=$(get_ipv4_subnet)
@@ -43,12 +47,20 @@ setup_lan() {
 
 setup_dnsmasq() {
     local ipv4_subnet=$(get_ipv4_subnet)
+    local hostname=$(get_node_name)
     # set dnsmasq
     uci_set dhcp '@dnsmasq[0]' domainneeded 1
-    uci_set dhcp '@dnsmasq[0]' local "/$hostname.node.her.wn/"
-    uci_set dhcp '@dnsmasq[0]' domain "$hostname.node.her.wn"
     uci_set dhcp '@dnsmasq[0]' nonegcache 1
     uci_set dhcp '@dnsmasq[0]' rebind_protection 0
+
+    if [[ ! -n "$hostname" ]]; then
+	logger "hwmn.generic.node_name not set, will not configure dnsmasq domain"
+    else
+	logger "hwmn.generic-node_name set, will configure dnsmasq domain"
+	uci_set dhcp '@dnsmasq[0]' local "/$hostname.node.her.wn/"
+	uci_set dhcp '@dnsmasq[0]' domain "$hostname.node.her.wn"
+    fi
+
     uci_commit dhcp
     if [[ ! -n "$ipv4_subnet" ]]; then
 	logger "hwmn.network.ipv4_subnet not set, skipping dnsmasq auth setup"
